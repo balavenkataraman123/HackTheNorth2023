@@ -3,7 +3,7 @@ import {Agent} from '@dfinity/agent'
 import {createActor} from './declarations/backend'
 import * as crypto from 'crypto-js'
 
-const agent = createActor("be2us-64aaa-aaaaa-qaabq-cai", {actorOptions: {host: 'localhost'}})
+const agent = createActor("be2us-64aaa-aaaaa-qaabq-cai", {actorOptions: {host: 'http://127.0.0.1:4943/'}})
 
 export const getKey = () => {
     if(localStorage.getItem('private_key') === null) {
