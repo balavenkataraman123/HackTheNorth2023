@@ -1,0 +1,4 @@
+service : () -> {
+  getImage : (text) -> (vec nat8) query;
+  uploadImage : (vec nat8) -> (text);
+}
