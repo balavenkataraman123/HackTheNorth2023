@@ -34,7 +34,7 @@ class App extends Component {
     render() {
  
         return (
-            <div style="background-color">
+            <div>
                 <h1>
                     A very basic test
                 </h1>
