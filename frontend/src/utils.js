@@ -29,3 +29,19 @@ export const addImageKey = (imageKey) => {
 export const Base64Image = ({b64}) => {
     return <img src={`data:image/png;base64, ${b64}`} alt=""></img>
 }
+
+// returns as a b64 string
+export const getImageByKey = async (key) => {
+    const intArray = await agent.getImage(key)
+    const decoder = new TextDecoder('utf8')
+    const b64Image = btoa(decoder.decode(intArray))    
+    return b64Image
+}
+
+// use a b64 string
+export const uploadImage = async (b64Image) => {
+    const encoder = new TextEncoder('utf8')
+    const intArray = new Uint8Array(encoder.encode(atob(b64Image)))
+    const key = await agent.uploadImage(intArray)
+    return key
+}
