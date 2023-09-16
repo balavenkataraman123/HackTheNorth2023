@@ -2,7 +2,6 @@ import Tesseract from 'tesseract.js';
 import React, { Component } from 'react';
  
 class App extends Component {
-
     ocrconvert = (fileurl, lang) => {
       Tesseract.recognize(
         fileurl,
@@ -17,7 +16,6 @@ class App extends Component {
         selectedFile: null
     };
     onFileChange = event => {
- 
         this.setState({ selectedFile: event.target.files[0] });
  
     };
@@ -29,10 +27,8 @@ class App extends Component {
         console.log(this.ocrconvert(this.fileurl, "eng"));
         
     };
-
  
     render() {
- 
         return (
             <div>
                 <h1>

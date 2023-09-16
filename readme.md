@@ -1,1 +1,1 @@
-# ramdom shit written in an all nighter
+# random shit written in an all nighter
