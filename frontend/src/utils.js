@@ -1,3 +1,4 @@
+import React from 'react'
 import {Agent} from '@dfinity/agent'
 import {createActor} from './declarations/backend'
 import * as crypto from 'crypto-js'
@@ -23,4 +24,8 @@ export const addImageKey = (imageKey) => {
     imageKeys.push(imageKey)
     localStorage.setItem('documents', JSON.stringify(imageKeys))
     return imageKeys
+}
+
+export const Base64Image = ({b64}) => {
+    return <img src={`data:image/png;base64, ${b64}`} alt=""></img>
 }
