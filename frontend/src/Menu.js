@@ -1,11 +1,10 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { getDescription } from './utils';
 
 const MenuPage = () => {
-    const history = useHistory();
 
     const handlePlusButtonClick = () => {
-        history.push('/picture');
+        window.location.href = '/picture'
     }
 
     
