@@ -1,6 +1,6 @@
-import { getDescription } from './utils';
+import { Base64Image, getDescription } from './utils';
 import React, { useState } from 'react';
-import { getImageByKey } from './utils';
+import { getImageByKey, userName, getImageKeys } from './utils';
 
 const MenuPage = () => {
 
@@ -13,10 +13,12 @@ const MenuPage = () => {
     const names = getDescription().map(item => item.split(':')[0]);
 
     const handleItemClick = (index) => {
-        const key = getDescription()[1][index];
-        
-        const image = getImageByKey(key);
-        setCurrentImage(image);
+        const updateImage = async () => {
+            const key = getImageKeys()[index];
+            const image = await getImageByKey(key);
+            setCurrentImage(image);
+        }
+        updateImage()
     }
 
     const handleCloseImage = () => {
@@ -35,10 +37,11 @@ const MenuPage = () => {
                 justifyContent: 'center',
                 padding: '20px',
                 marginBottom: '20px',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                borderRadius: '10px'
             }}>
-                <h1 style={{ margin: '0 0 10px 0', boxSizing: 'border-box' }}>Hi [username],</h1>
-                <h3 style={{ margin: 0, boxSizing: 'border-box' }}>Welcome back!</h3>
+                <h1 style={{ margin: '0 0 10px 0', boxSizing: 'border-box' }}>Hi {userName()},</h1>
+                <h3 style={{ margin: 0, boxSizing: 'border-box' }}>Welcome back <span style={{fontSize: '2em'}}>👋</span>!</h3>
             </div>
 
             <div style={{ flex: 1, boxSizing: 'border-box' }}>
@@ -52,7 +55,7 @@ const MenuPage = () => {
 
             {currentImage && 
                 <div onClick={handleCloseImage} style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <img src={currentImage} alt="Selected" style={{ maxWidth: '90%', maxHeight: '80%' }} />
+                    <Base64Image b64={currentImage} />
                 </div>
             }
 

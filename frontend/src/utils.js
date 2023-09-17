@@ -15,6 +15,13 @@ export const signedIn = () => {
     return localStorage.getItem('name') && localStorage.getItem('private_key') && localStorage.getItem('documents')
 }
 
+export const userName = () => {
+    if(localStorage.getItem('name') === null){
+        throw new Error("User was not initialized!")
+    }
+    return localStorage.getItem('name')
+}
+
 const getKey = () => {
     if(localStorage.getItem('private_key') === null) {
         throw new Error("User was not initialized!");
