@@ -16,14 +16,22 @@ export const getImageKeys = () => {
     if(localStorage.getItem('documents') === null) {
         localStorage.setItem('documents', JSON.stringify([]))
     }
-    return JSON.parse(localStorage.getItem('documents'))
+    return JSON.parse(localStorage.getItem('documents'))[0]
 }
 
-// image = [key, description]
+export const getDescription = () => {
+    if(localStorage.getItem('documents') === null) {
+        localStorage.setItem('documents', JSON.stringify([]))
+    }
+    return JSON.parse(localStorage.getItem('documents'))[1]
+}
+
 export const addImage = (image) => {
     const imageKeys = getImageKeys()
     imageKeys.push(image)
-    localStorage.setItem('documents', JSON.stringify(imageKeys))
+    const imageDescription = getImageDescription()
+    imageDescription.push(image)
+    localStorage.setItem('documents', JSON.stringify([imageKeys, imageDescription]))
     return imageKeys
 }
 
@@ -47,4 +55,34 @@ export const uploadImage = async (b64Image) => {
     const key = await agent.uploadImage(intArray)
     console.log(intArray)
     return key
+}
+
+export const encryptImage = ({b64}) => {
+    let secretKey = localStorage.getItem('private_key');
+
+    secretKey = CryptoJS.enc.Base64.parse(CryptoJS.enc.Utf8.parse(secretKey).toString(CryptoJS.enc.Base64)).toString(CryptoJS.enc.Utf8).padEnd(32, '0');
+
+    fs.writeFileSync('secretKey.txt', secretKey);
+
+    const inputBase64 = fs.readFileSync('input.b64', 'utf8');
+    const inputBytes = Buffer.from(inputBase64, 'base64');
+
+    const encryptedData = CryptoJS.AES.encrypt(inputBytes.toString('hex'), secretKey).toString();
+
+    const encryptedDataBase64 = Buffer.from(encryptedData).toString('base64');
+
+    return encryptedDataBase64;
+}
+
+export const decryptImage = ({b64}) => {
+    let secretKey = localStorage.getItem('private_key');
+
+    const encryptedDataBase64 = fs.readFileSync('encrypted_output.b64', 'utf8');
+    const encryptedData = Buffer.from(encryptedDataBase64, 'base64').toString('utf8');
+    
+    const decryptedDataHex = CryptoJS.AES.decrypt(encryptedData, secretKey);
+    
+    const decryptedBytes = Buffer.from(decryptedDataHex.toString(CryptoJS.enc.Utf8), 'hex');
+    
+    return decryptedDataBase64 = Buffer.from(decryptedBytes).toString('base64');
 }
