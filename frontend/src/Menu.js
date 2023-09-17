@@ -1,14 +1,26 @@
-import React from 'react';
 import { getDescription } from './utils';
+import React, { useState } from 'react';
 
 const MenuPage = () => {
 
+    const [currentImage, setCurrentImage] = useState(null);
+
     const handlePlusButtonClick = () => {
-        window.location.href = '/picture'
+        window.location.href = '/picture';
     }
 
-    
     const names = getDescription().map(item => item.split(':')[0]);
+
+    const handleItemClick = (index) => {
+        const key = getDescription()[1][index];
+        
+        const image = getImageByKey(key);
+        setCurrentImage(image);
+    }
+
+    const handleCloseImage = () => {
+        setCurrentImage(null);
+    }
 
     return (
         <div style={{ padding: '20px', width: '96vw', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -32,12 +44,18 @@ const MenuPage = () => {
                 <h2>Your Records</h2>
                 <ul style={{ fontSize: '18px', listStyleType: 'square', paddingLeft: '40px' }}>
                     {names.map((name, index) => (
-                        <li key={index}>{name}</li>
+                        <li key={index} onClick={() => handleItemClick(index)}>{name}</li>
                     ))}
                 </ul>
             </div>
 
-            <hr style={{ margin: '20px 0', borderTop: '2px solid black' }} /> {/* Breaker Line */}
+            {currentImage && 
+                <div onClick={handleCloseImage} style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <img src={currentImage} alt="Selected" style={{ maxWidth: '90%', maxHeight: '80%' }} />
+                </div>
+            }
+
+            <hr style={{ margin: '20px 0', borderTop: '2px solid black' }} /> 
 
             <footer style={{ textAlign: 'center', padding: '20px' }}>
                 <button onClick={handlePlusButtonClick} style={{
