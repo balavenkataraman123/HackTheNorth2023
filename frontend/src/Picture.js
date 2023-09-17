@@ -103,8 +103,9 @@ export const DescriptionPage = ({imageStr}) => {
     }
 
     const upload = async () => {
-        registerDocument(imageStr, `${title}: ${desc}`)
+        await registerDocument(imageStr, `${title}: ${desc}`)
         alert('document uploaded successfully!')
+        window.location.href = "/"
     }
 
     return <div style={{...stickBorder, display: 'flex', alignItems: 'stretch', flexDirection: 'column', padding: '20px'}}>

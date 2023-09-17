@@ -28,7 +28,6 @@ export const getDescription = () => {
 
 export const addImage = (key, description) => {
     const imageKeys = getImageKeys()
-    console.log(imageKeys)
     imageKeys.push(key)
     const imageDescription = getDescription()
     imageDescription.push(description)
