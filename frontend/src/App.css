@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Manrope&display=swap');
+
 .App {
   text-align: center;
 }
@@ -59,4 +61,12 @@
   font-weight: bolder;
   color: gray;
   font-size: 0.7em;
+}
+
+.monospaced-font {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+body * {
+  font-family: 'Manrope', sans-serif;
 }
