@@ -45,17 +45,18 @@
   margin-top: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
-  border: solid 3px black;
-  color: black;
+  border: solid 3px gray;
+  color: gray;
   height: 2em;
   font-size: 1em;
 }
 
 .themed-button {
   padding: 10px;
-  border: solid 3px black;
+  border: solid 3px gray;
   border-radius: 5px;
   background-color: white;
   font-weight: bolder;
+  color: gray;
   font-size: 0.7em;
 }

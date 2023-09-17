@@ -5,23 +5,33 @@ import * as CryptoJS from 'crypto-js'
 
 const agent = createActor("be2us-64aaa-aaaaa-qaabq-cai", {agentOptions: {host: 'http://127.0.0.1:4943/'}})
 
+export const initializeUser = (name) => {
+    localStorage.setItem('name', name)
+    localStorage.setItem('private_key', CryptoJS.lib.WordArray.random(32))
+    localStorage.setItem('documents', JSON.stringify([[], []]))
+}
+
+export const signedIn = () => {
+    return localStorage.getItem('name') && localStorage.getItem('private_key') && localStorage.getItem('documents')
+}
+
 const getKey = () => {
     if(localStorage.getItem('private_key') === null) {
-        localStorage.setItem('private_key', CryptoJS.lib.WordArray.random(32))
+        throw new Error("User was not initialized!");
     }
     return localStorage.getItem('private_key')
 }
 
 export const getImageKeys = () => {
     if(localStorage.getItem('documents') === null) {
-        localStorage.setItem('documents', JSON.stringify([[], []]))
+        throw new Error("User was not initialized!");
     }
     return JSON.parse(localStorage.getItem('documents'))[0]
 }
 
 export const getDescription = () => {
     if(localStorage.getItem('documents') === null) {
-        localStorage.setItem('documents', JSON.stringify([[], []]))
+        throw new Error("User was not initialized!");
     }
     return JSON.parse(localStorage.getItem('documents'))[1]
 }

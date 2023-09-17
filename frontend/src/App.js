@@ -5,12 +5,19 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import { PicturePage } from './Picture';
 import Menu from './Menu'
 import RegisterPage from './Register';
+import { signedIn } from './utils';
 
 const Home = () => {
   return <Menu />
 }
 
 function App() {
+  if(!signedIn()) {
+    if(window.location.pathname !== '/register'){
+      console.log(window.location)
+      window.location.href = '/register'
+    }
+  }
   return (
     <BrowserRouter>
       <Routes>

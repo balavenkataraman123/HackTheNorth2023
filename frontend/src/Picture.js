@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import WebcamCapture from './Webcam'
 import { Base64Image, registerDocument} from './utils'
+import bg from './bg.jpg'
 
 const stickBorder = {
     position: 'absolute', 
@@ -13,7 +14,7 @@ const stickBorder = {
 const PictureFrame = (props) => {
     const CORNER_LEN = '30px'
     const CORNER_OFF = '-10px'
-    const BORDER = 'solid 3px black'
+    const BORDER = 'solid 3px gray'
     return <div style={{width: '100%', height: '100%', position: 'relative'}}>
         <div style={{
             width: `${CORNER_LEN}`, 
@@ -38,7 +39,7 @@ const PictureFrame = (props) => {
 }
 
 const PhotoButton = ({onClick, size}) => {
-    const BORDER = "solid 3px black"
+    const BORDER = "solid 3px gray"
     return <div style={{
         width: size, 
         height: size, 
@@ -89,7 +90,6 @@ const CameraPage = ({pictureTaken}) => {
 export const DescriptionPage = ({imageStr}) => {
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
-    const BORDER = 'solid 3px black'
 
     const upload = async () => {
         await registerDocument(imageStr, `${title}: ${desc}`)
@@ -113,9 +113,11 @@ export const DescriptionPage = ({imageStr}) => {
 
 export const PicturePage = () => {
     document.body.classList.add('full-height')
-    document.body.style.backgroundColor = 'lightgray'
     document.documentElement.classList.add('full-height')
     document.getElementById('root').classList.add('full-height')
+    document.body.style.backgroundImage = `url(${bg})`
+    document.body.style.backgroundSize = 'cover'
+
     const [curPic, setPic] = useState(undefined)
     const [step, setStep] = useState(0)
     const picTaken = (imageStr) => {
