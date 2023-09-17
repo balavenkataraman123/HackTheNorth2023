@@ -85,7 +85,8 @@ export const decryptImage = (b64) => {
     return Buffer.from(decryptedBytes).toString('base64');
 }
 
+// TODO encrypt the image!
 export const registerDocument = async (rawB64Image, description) => {
-    const key = await uploadImage(encryptImage(rawB64Image))
+    const key = await uploadImage(rawB64Image)
     addImage([key, description])
 }

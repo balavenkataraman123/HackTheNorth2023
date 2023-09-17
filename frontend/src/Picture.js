@@ -64,7 +64,6 @@ const CameraPage = ({pictureTaken}) => {
     }, [container])
 
     const onPicture = () => {
-        console.log(webcamRef.current)
         if(webcamRef.current){
             pictureTaken(webcamRef.current.getScreenshot())
         }
@@ -103,8 +102,9 @@ export const DescriptionPage = ({imageStr}) => {
         fontSize: '1em'
     }
 
-    const upload = () => {
+    const upload = async () => {
         registerDocument(imageStr, `${title}: ${desc}`)
+        alert('document uploaded successfully!')
     }
 
     return <div style={{...stickBorder, display: 'flex', alignItems: 'stretch', flexDirection: 'column', padding: '20px'}}>
@@ -113,8 +113,8 @@ export const DescriptionPage = ({imageStr}) => {
                 <Base64Image b64={imageStr} />
             </PictureFrame>
         </div>
-        <input type="text" placeholder="Title" style={{...textBox}} value={title} onChange={setTitle}></input>
-        <input type="text" placeholder="Description" style={{...textBox, height: '5em'}} value={desc} onChange={setDesc}></input>
+        <input type="text" placeholder="Title" style={{...textBox}} value={title} onChange={(e) => setTitle(e.target.value)}></input>
+        <input type="text" placeholder="Description" style={{...textBox, height: '5em'}} value={desc} onChange={(e) => setDesc(e.target.value)}></input>
         <div style={{textAlign: 'center'}}>
             <input type="submit" value="Upload Document" style={{padding: '10px', border: BORDER, borderRadius: '5px', backgroundColor: 'white', fontWeight: 'bolder', fontSize: '0.7em'}} onClick={upload}></input>
         </div>
