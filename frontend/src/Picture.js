@@ -89,18 +89,7 @@ const CameraPage = ({pictureTaken}) => {
 export const DescriptionPage = ({imageStr}) => {
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
-
-    const MARGIN = '10px';
-    const BORDER = "solid 3px black"
-    const textBox = {
-        marginTop: MARGIN,
-        marginBottom: MARGIN,
-        borderRadius: '5px',
-        border: BORDER,
-        color: 'black',
-        height: '2em',
-        fontSize: '1em'
-    }
+    const BORDER = 'solid 3px black'
 
     const upload = async () => {
         await registerDocument(imageStr, `${title}: ${desc}`)
@@ -114,10 +103,10 @@ export const DescriptionPage = ({imageStr}) => {
                 <Base64Image b64={imageStr} />
             </PictureFrame>
         </div>
-        <input type="text" placeholder="Title" style={{...textBox}} value={title} onChange={(e) => setTitle(e.target.value)}></input>
-        <input type="text" placeholder="Description" style={{...textBox, height: '5em'}} value={desc} onChange={(e) => setDesc(e.target.value)}></input>
+        <input type="text" placeholder="Title" className="themed-textbox" value={title} onChange={(e) => setTitle(e.target.value)}></input>
+        <input type="text" placeholder="Description" className="themed-textbox" style={{height: '5em'}} value={desc} onChange={(e) => setDesc(e.target.value)}></input>
         <div style={{textAlign: 'center'}}>
-            <input type="submit" value="Upload Document" style={{padding: '10px', border: BORDER, borderRadius: '5px', backgroundColor: 'white', fontWeight: 'bolder', fontSize: '0.7em'}} onClick={upload}></input>
+            <input type="submit" value="Upload Document" className='themed-button' onClick={upload}></input>
         </div>
     </div>
 }
