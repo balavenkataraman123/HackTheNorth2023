@@ -19,9 +19,7 @@ class App extends Component {
         this.setState({ selectedFile: event.target.files[0] });
  
     };
-    onFileUpload = () => {
- 
-        
+    onFileUpload = () => {       
         console.log(this.state.selectedFile);
         this.fileurl = URL.createObjectURL(this.state.selectedFile);
         console.log(this.ocrconvert(this.fileurl, "eng"));
