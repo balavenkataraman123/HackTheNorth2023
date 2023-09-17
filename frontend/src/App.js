@@ -1,6 +1,8 @@
 import logo from './logo.svg';
+import React, {useState, useEffect} from 'react'
 import './App.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import { PicturePage } from './Picture';
 
 const Home = () => {
   return <div className="App">
@@ -33,6 +35,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />}></Route>
         <Route path='/second' element={<Secondary />}></Route>
+        <Route path='/picture' element={<PicturePage />}></Route>
       </Routes>
     </BrowserRouter>
   );
