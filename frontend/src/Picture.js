@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
+import WebcamCapture from './Webcam'
 
 const stickBorder = {
     position: 'absolute', 
@@ -49,23 +50,43 @@ const PhotoButton = ({onClick, size}) => {
     }} onClick={onClick}></div>
 }
 
-const CameraPage = () => {
+const CameraPage = ({pictureTaken}) => {
+    const container = useRef(null)
+    const [cWidth, setWidth] = useState(500)
+    const [cHeight, setHeight] = useState(500)
+    const webcamRef = useRef(undefined)
+    useEffect(() => {
+        if(container && container.current){
+            setWidth(container.current.offsetWidth)
+            setHeight(container.current.offsetHeight)
+        }
+    }, [container])
+
+    const onPicture = () => {
+        console.log(webcamRef.current)
+        if(webcamRef.current){
+            pictureTaken(webcamRef.current.getScreenshot())
+        }
+    }
+
     const childStretch = {
         display: 'flex', 
         alignItems: 'stretch', 
         flexDirection: 'column'
     }
     return <div style={{...stickBorder, ...childStretch, padding: '20px'}}>
-        <div style={{flexGrow: '10'}}>
-            <PictureFrame><div style={{width: '100%', height: '100%', backgroundColor: 'red', borderRadius: '20px'}}> </div></PictureFrame>
+        <div style={{flexGrow: '10'}} ref={container}>
+            <PictureFrame>
+                <WebcamCapture width={cWidth} height={cHeight} webcamRef={webcamRef}/>
+            </PictureFrame>
         </div>
         <div style={{flexGrow: '1', display: 'flex', flexDirection: 'row', paddingTop: '10px', paddingBottom: '10px'}}>
-            <PhotoButton size='60px' onClick={() => {}}/>
+            <PhotoButton size='60px' onClick={onPicture}/>
         </div>
     </div>
 }
 
-export const DescriptionPage = () => {
+export const DescriptionPage = ({imageStr}) => {
     const MARGIN = '10px';
     const BORDER = "solid 3px black"
     const textBox = {
@@ -80,7 +101,9 @@ export const DescriptionPage = () => {
 
     return <div style={{...stickBorder, display: 'flex', alignItems: 'stretch', flexDirection: 'column', padding: '20px'}}>
         <div style={{flexGrow: '4', marginBottom: '20px'}}>
-            <PictureFrame><div style={{width: '100%', height: '100%', backgroundColor: 'red', borderRadius: '20px'}}> </div></PictureFrame>
+            <PictureFrame>
+                <div style={{width: '100%', height: '100%', backgroundColor: 'red', borderRadius: '20px'}}> </div>
+            </PictureFrame>
         </div>
         <input type="text" placeholder="Title" style={{...textBox}}></input>
         <input type="text" placeholder="Description" style={{...textBox, height: '5em'}}></input>
@@ -95,5 +118,12 @@ export const PicturePage = () => {
     document.body.style.backgroundColor = 'lightgray'
     document.documentElement.classList.add('full-height')
     document.getElementById('root').classList.add('full-height')
-    return <DescriptionPage />
+    const [curPic, setPic] = useState(undefined)
+    const [step, setStep] = useState(0)
+    const picTaken = (imageStr) => {
+        setPic(imageStr)
+        setStep(1)
+    }
+    if(step === 0) return <CameraPage pictureTaken={picTaken} />
+    else return <DescriptionPage imageStr={curPic}/>
 }
