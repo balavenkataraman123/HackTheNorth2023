@@ -3,7 +3,7 @@ import {Agent} from '@dfinity/agent'
 import {createActor} from './declarations/backend'
 import * as crypto from 'crypto-js'
 
-const agent = createActor("be2us-64aaa-aaaaa-qaabq-cai", {actorOptions: {host: 'http://127.0.0.1:4943/'}})
+const agent = createActor("be2us-64aaa-aaaaa-qaabq-cai", {agentOptions: {host: 'http://127.0.0.1:4943/'}})
 
 export const getKey = () => {
     if(localStorage.getItem('private_key') === null) {
@@ -19,9 +19,10 @@ export const getImageKeys = () => {
     return JSON.parse(localStorage.getItem('documents'))
 }
 
-export const addImageKey = (imageKey) => {
+// image = [key, description]
+export const addImage = (image) => {
     const imageKeys = getImageKeys()
-    imageKeys.push(imageKey)
+    imageKeys.push(image)
     localStorage.setItem('documents', JSON.stringify(imageKeys))
     return imageKeys
 }
@@ -35,6 +36,7 @@ export const getImageByKey = async (key) => {
     const intArray = await agent.getImage(key)
     const decoder = new TextDecoder('utf8')
     const b64Image = btoa(decoder.decode(intArray))    
+    console.log(intArray)
     return b64Image
 }
 
@@ -43,5 +45,6 @@ export const uploadImage = async (b64Image) => {
     const encoder = new TextEncoder('utf8')
     const intArray = new Uint8Array(encoder.encode(atob(b64Image)))
     const key = await agent.uploadImage(intArray)
+    console.log(intArray)
     return key
 }
