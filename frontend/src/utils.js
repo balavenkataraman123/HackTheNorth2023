@@ -1,5 +1,6 @@
 import React from 'react'
 import {Agent} from '@dfinity/agent'
+// import {Buffer} from 'fs'
 import {createActor} from './declarations/backend'
 import * as CryptoJS from 'crypto-js'
 

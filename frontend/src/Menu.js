@@ -2,6 +2,7 @@ import { Base64Image, getDescription } from './utils';
 import React, { useState } from 'react';
 import { getImageByKey, userName, getImageKeys } from './utils';
 import bg from './bg.jpg'
+import TranslateImage from './ImageTranslation';
 
 const MenuPage = () => {
     document.body.style.backgroundImage = `url(${bg})`
@@ -20,6 +21,8 @@ const MenuPage = () => {
             const key = getImageKeys()[index];
             const image = await getImageByKey(key);
             setCurrentImage(image);
+            // localStorage.setItem('img', image)
+            // window.location.href = '/view'
         }
         updateImage()
     }

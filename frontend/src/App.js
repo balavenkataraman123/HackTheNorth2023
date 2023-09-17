@@ -6,6 +6,7 @@ import { PicturePage } from './Picture';
 import Menu from './Menu'
 import RegisterPage from './Register';
 import { signedIn } from './utils';
+import TranslateImage from './ImageTranslation'
 
 const Home = () => {
   return <Menu />
@@ -24,6 +25,7 @@ function App() {
         <Route path='/' element={<Home />}></Route>
         <Route path='/register' element={<RegisterPage />}></Route>
         <Route path='/picture' element={<PicturePage />}></Route>
+        <Route path='/view' element={<TranslateImage />}></Route>
       </Routes>
     </BrowserRouter>
   );
