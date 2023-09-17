@@ -1,46 +1,56 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';;
 
 const MenuPage = () => {
-    const history = useHistory();
 
     const handlePlusButtonClick = () => {
-        history.push('/picture');
+    const history = useHistory();
+    history.push('/picture');
     }
 
     return (
-        <div style={{ padding: '20px' }}>
-            <div style={{ 
-                border: 'solid 3px black', 
-                borderRadius: '5px', 
-                padding: '10px', 
-                marginBottom: '20px' 
-            }}>
-                Hi [username], <br></br>welcome back!
-            </div>
-            
-            <div>
-                <h2>Your Records</h2>
-                <ul>
-                    <li>Record 1</li>
-                    <li>Record 2</li>
-                    <li>Record 3</li>
-                </ul>
-            </div>
+    <div style={{ padding: '20px', width: '96vw', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
 
-            <div style={{ position: 'fixed', bottom: '20px', left: '20px' }}>
-                <button onClick={handlePlusButtonClick} style={{ 
-                    backgroundColor: 'white', 
-                    border: 'solid 3px black', 
-                    borderRadius: '50%', 
-                    width: '50px', 
-                    height: '50px', 
-                    fontSize: '24px' 
-                }}>
-                    +
-                </button>
-            </div>
+        <div style={{
+        border: '2px solid black',
+        width: '100%',
+        height: 'calc(33vh)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '20px',
+        marginBottom: '20px',
+        boxSizing: 'border-box'
+        }}>
+        <h1 style={{ margin: '0 0 10px 0', boxSizing: 'border-box' }}>Hi [username],</h1>
+        <h3 style={{ margin: 0, boxSizing: 'border-box' }}>Welcome back!</h3>
         </div>
+
+        <div style={{ flex: 1, boxSizing: 'border-box' }}>
+        <h2>Your Records</h2>
+        <ul style={{ fontSize: '18px', listStyleType: 'square', paddingLeft: '40px' }}>
+            <li>Record 1</li>
+            <li>Record 2</li>
+            <li>Record 3</li>
+        </ul>
+        </div>
+
+        <hr style={{ margin: '20px 0', borderTop: '2px solid black' }} /> {/* Breaker Line */}
+
+        <footer style={{ textAlign: 'center', padding: '20px' }}>
+        <button onClick={handlePlusButtonClick} style={{
+            backgroundColor: 'white',
+            border: 'solid 3px black',
+            borderRadius: '50%',
+            width: '50px',
+            height: '50px',
+            fontSize: '24px',
+            boxSizing: 'border-box'
+        }}>
+            +
+        </button>
+        </footer>
+    </div>
     );
 }
 
