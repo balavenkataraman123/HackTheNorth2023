@@ -2,20 +2,20 @@ import { $query, $update, StableBTreeMap, blob } from 'azle';
 
 
 // This is a global variable that is stored on the heap
-let pics = new StableBTreeMap<string, blob>(0, 100, 10_000_000)
+let pics = new StableBTreeMap<string, string>(0, 100, 10_000_000)
 
 // Query calls complete quickly because they do not go through consensus
 $query;
-export function getImage(key: string): blob {
+export function getImage(key: string): string {
     const ret = pics.get(key)
-    const deadBlob = Uint8Array.from([])
-    return ret.Some ? ret.Some : deadBlob
+    const deadString = ""
+    return ret.Some ? ret.Some : deadString
 }
 
 // Update calls take a few seconds to complete
 // This is because they persist state changes and go through consensus
 $update;
-export function uploadImage(value: blob): string {
+export function uploadImage(value: string): string {
     let randKey = undefined
     const chars = "abcdfeghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     do {

@@ -14,20 +14,21 @@ const getKey = () => {
 
 export const getImageKeys = () => {
     if(localStorage.getItem('documents') === null) {
-        localStorage.setItem('documents', JSON.stringify([]))
+        localStorage.setItem('documents', JSON.stringify([[], []]))
     }
     return JSON.parse(localStorage.getItem('documents'))[0]
 }
 
 export const getDescription = () => {
     if(localStorage.getItem('documents') === null) {
-        localStorage.setItem('documents', JSON.stringify([]))
+        localStorage.setItem('documents', JSON.stringify([[], []]))
     }
     return JSON.parse(localStorage.getItem('documents'))[1]
 }
 
 export const addImage = (key, description) => {
     const imageKeys = getImageKeys()
+    console.log(imageKeys)
     imageKeys.push(key)
     const imageDescription = getDescription()
     imageDescription.push(description)
@@ -41,19 +42,13 @@ export const Base64Image = ({b64}) => {
 
 // returns as a b64 string
 export const getImageByKey = async (key) => {
-    const intArray = await agent.getImage(key)
-    const decoder = new TextDecoder('utf8')
-    const b64Image = btoa(decoder.decode(intArray))    
-    console.log(intArray)
+    const b64Image = await agent.getImage(key)
     return b64Image
 }
 
 // use a b64 string
 const uploadImage = async (b64Image) => {
-    const encoder = new TextEncoder('utf8')
-    const intArray = new Uint8Array(encoder.encode(atob(b64Image)))
-    const key = await agent.uploadImage(intArray)
-    console.log(intArray)
+    const key = await agent.uploadImage(b64Image)
     return key
 }
 
@@ -88,5 +83,5 @@ export const decryptImage = (b64) => {
 // TODO encrypt the image!
 export const registerDocument = async (rawB64Image, description) => {
     const key = await uploadImage(rawB64Image)
-    addImage([key, description])
+    addImage(key, description)
 }
