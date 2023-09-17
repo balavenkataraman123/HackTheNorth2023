@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import WebcamCapture from './Webcam'
+import { Base64Image, registerDocument} from './utils'
 
 const stickBorder = {
     position: 'absolute', 
@@ -87,6 +88,9 @@ const CameraPage = ({pictureTaken}) => {
 }
 
 export const DescriptionPage = ({imageStr}) => {
+    const [title, setTitle] = useState("")
+    const [desc, setDesc] = useState("")
+
     const MARGIN = '10px';
     const BORDER = "solid 3px black"
     const textBox = {
@@ -99,16 +103,20 @@ export const DescriptionPage = ({imageStr}) => {
         fontSize: '1em'
     }
 
+    const upload = () => {
+        registerDocument(imageStr, `${title}: ${desc}`)
+    }
+
     return <div style={{...stickBorder, display: 'flex', alignItems: 'stretch', flexDirection: 'column', padding: '20px'}}>
         <div style={{flexGrow: '4', marginBottom: '20px'}}>
             <PictureFrame>
-                <div style={{width: '100%', height: '100%', backgroundColor: 'red', borderRadius: '20px'}}> </div>
+                <Base64Image b64={imageStr} />
             </PictureFrame>
         </div>
-        <input type="text" placeholder="Title" style={{...textBox}}></input>
-        <input type="text" placeholder="Description" style={{...textBox, height: '5em'}}></input>
+        <input type="text" placeholder="Title" style={{...textBox}} value={title} onChange={setTitle}></input>
+        <input type="text" placeholder="Description" style={{...textBox, height: '5em'}} value={desc} onChange={setDesc}></input>
         <div style={{textAlign: 'center'}}>
-            <input type="submit" value="Upload Document" style={{padding: '10px', border: BORDER, borderRadius: '5px', backgroundColor: 'white', fontWeight: 'bolder', fontSize: '0.7em'}}></input>
+            <input type="submit" value="Upload Document" style={{padding: '10px', border: BORDER, borderRadius: '5px', backgroundColor: 'white', fontWeight: 'bolder', fontSize: '0.7em'}} onClick={upload}></input>
         </div>
     </div>
 }

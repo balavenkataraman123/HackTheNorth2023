@@ -1,13 +1,13 @@
 import React from 'react'
 import {Agent} from '@dfinity/agent'
 import {createActor} from './declarations/backend'
-import * as crypto from 'crypto-js'
+import * as CryptoJS from 'crypto-js'
 
 const agent = createActor("be2us-64aaa-aaaaa-qaabq-cai", {agentOptions: {host: 'http://127.0.0.1:4943/'}})
 
-export const getKey = () => {
+const getKey = () => {
     if(localStorage.getItem('private_key') === null) {
-        localStorage.setItem('private_key', crypto.lib.WordArray.random(32))
+        localStorage.setItem('private_key', CryptoJS.lib.WordArray.random(32))
     }
     return localStorage.getItem('private_key')
 }
@@ -26,17 +26,17 @@ export const getDescription = () => {
     return JSON.parse(localStorage.getItem('documents'))[1]
 }
 
-export const addImage = (image) => {
+export const addImage = (key, description) => {
     const imageKeys = getImageKeys()
-    imageKeys.push(image)
-    const imageDescription = getImageDescription()
-    imageDescription.push(image)
+    imageKeys.push(key)
+    const imageDescription = getDescription()
+    imageDescription.push(description)
     localStorage.setItem('documents', JSON.stringify([imageKeys, imageDescription]))
     return imageKeys
 }
 
 export const Base64Image = ({b64}) => {
-    return <img src={`data:image/png;base64, ${b64}`} alt=""></img>
+    return <img src={b64} alt=""></img>
 }
 
 // returns as a b64 string
@@ -49,7 +49,7 @@ export const getImageByKey = async (key) => {
 }
 
 // use a b64 string
-export const uploadImage = async (b64Image) => {
+const uploadImage = async (b64Image) => {
     const encoder = new TextEncoder('utf8')
     const intArray = new Uint8Array(encoder.encode(atob(b64Image)))
     const key = await agent.uploadImage(intArray)
@@ -57,14 +57,12 @@ export const uploadImage = async (b64Image) => {
     return key
 }
 
-export const encryptImage = ({b64}) => {
-    let secretKey = localStorage.getItem('private_key');
+export const encryptImage = (b64) => {
+    let secretKey = getKey()
 
     secretKey = CryptoJS.enc.Base64.parse(CryptoJS.enc.Utf8.parse(secretKey).toString(CryptoJS.enc.Base64)).toString(CryptoJS.enc.Utf8).padEnd(32, '0');
 
-    fs.writeFileSync('secretKey.txt', secretKey);
-
-    const inputBase64 = fs.readFileSync('input.b64', 'utf8');
+    const inputBase64 = b64
     const inputBytes = Buffer.from(inputBase64, 'base64');
 
     const encryptedData = CryptoJS.AES.encrypt(inputBytes.toString('hex'), secretKey).toString();
@@ -74,15 +72,20 @@ export const encryptImage = ({b64}) => {
     return encryptedDataBase64;
 }
 
-export const decryptImage = ({b64}) => {
-    let secretKey = localStorage.getItem('private_key');
+export const decryptImage = (b64) => {
+    let secretKey = getKey()
 
-    const encryptedDataBase64 = fs.readFileSync('encrypted_output.b64', 'utf8');
+    const encryptedDataBase64 = b64
     const encryptedData = Buffer.from(encryptedDataBase64, 'base64').toString('utf8');
     
     const decryptedDataHex = CryptoJS.AES.decrypt(encryptedData, secretKey);
     
     const decryptedBytes = Buffer.from(decryptedDataHex.toString(CryptoJS.enc.Utf8), 'hex');
     
-    return decryptedDataBase64 = Buffer.from(decryptedBytes).toString('base64');
+    return Buffer.from(decryptedBytes).toString('base64');
+}
+
+export const registerDocument = async (rawB64Image, description) => {
+    const key = await uploadImage(encryptImage(rawB64Image))
+    addImage([key, description])
 }
